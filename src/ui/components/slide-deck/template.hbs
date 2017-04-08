@@ -22,4 +22,40 @@
       $ cd slide-deck
     </code-snippet>
   </content-slide>
+
+  <content-slide @title="Start it up" @current={{current}} @deckMeta={{deckMeta}}>
+    <code-snippet class="language-x">
+      $ ember serve
+    </code-snippet>
+    <p>When you open up <a href="http://localhost:4200/">http://localhost:4200/</a> you should see:</p>
+    <blockquote>
+      <h1>Welcome to Glimmer!</h1>
+    </blockquote>
+  </content-slide>
+  
+  <content-slide @title="About the app's entry point" @current={{current}} @deckMeta={{deckMeta}}>
+    <p>Our app is actually just a component tree that starts with a root component. A root component is just like any other component, but it is rendered like this from <code>src/index.ts</code>:</p>
+    <code-snippet class="language-typescript">
+      const app = new App();
+      const containerElement = document.getElementById('app');
+
+      app.renderComponent('slide-deck', containerElement, null);
+    </code-snippet>
+  </content-slide>
+
+  <content-slide @title="Give our app some data" @current={{current}} @deckMeta={{deckMeta}}>
+    <p>Open up <code>src/ui/components/slide-deck/component.ts</code> and make the class look like this:</p>
+    <code-snippet class="language-typescript">
+      export default class SlideDeck extends Component {
+        get deckMeta(): object {
+          return {
+            title: 'Making a slide deck with Glimmer',
+            author: 'Robbie Pitts',
+            twitter: '@_robbiepitts',
+            github: '@robbiepitts'
+          };
+        }
+      }
+    </code-snippet>
+  </content-slide>
 </div>
