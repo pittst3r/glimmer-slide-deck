@@ -1,3 +1,19 @@
-h1 {
-  color: #444;
+body {
+  margin: 4rem;
+}
+.slide {
+  font-family: sans-serif;
+  font-size: 2rem;
+
+  header {
+    font-size: 1rem;
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+code {
+  font-family: 'Input', 'Menlo', 'Monaco', 'Courier New', monospace;
 }

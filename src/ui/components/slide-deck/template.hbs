@@ -1,3 +1,28 @@
-<div>
-  <h1>Welcome to Glimmer!</h1>
+<div class="slide-deck">
+  <title-slide
+    @current={{current}}
+    @title={{meta.title}}
+    @author={{meta.author}}
+    @twitter={{meta.twitter}}
+    @github={{meta.github}}
+  />
+
+  <content-slide @title="Getting set up" @current={{current}} @meta={{meta}}>
+    <p>We need the ember-cli canary channel for the next step. This is how we get it:</p>
+    <code-snippet class="language-x">
+      $ yarn global add ember-cli/ember-cli
+    </code-snippet>
+    <p>Then to make sure there isn't some global tomfoolery going on:</p>
+    <code-snippet class="language-x">
+      $ ember version
+      ember-cli: 2.13.0-beta.3
+    </code-snippet>
+  </content-slide>
+
+  <content-slide @title="Creating the project" @current={{current}} @meta={{meta}}>
+    <code-snippet class="language-x">
+      $ ember new slide-deck -b @glimmer/blueprint
+      $ cd slide-deck
+    </code-snippet>
+  </content-slide>
 </div>
