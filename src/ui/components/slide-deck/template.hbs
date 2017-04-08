@@ -1,10 +1,10 @@
 <div class="slide-deck">
   <title-slide
     @current={{current}}
-    @meta={{meta}}
+    @deckMeta={{deckMeta}}
   />
 
-  <content-slide @title="Get set up" @current={{current}} @meta={{meta}}>
+  <content-slide @title="Get set up" @current={{current}} @deckMeta={{deckMeta}}>
     <p>We need the ember-cli canary channel for the next step. This is how we get it:</p>
     <code-snippet class="language-x">
       $ yarn global add ember-cli/ember-cli
@@ -16,7 +16,7 @@
     </code-snippet>
   </content-slide>
 
-  <content-slide @title="Create the project" @current={{current}} @meta={{meta}}>
+  <content-slide @title="Create the project" @current={{current}} @deckMeta={{deckMeta}}>
     <code-snippet class="language-x">
       $ ember new slide-deck -b @glimmer/blueprint
       $ cd slide-deck

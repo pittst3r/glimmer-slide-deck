@@ -12,7 +12,7 @@ export default class SlideDeck extends Component {
     });
   }
 
-  get meta(): object {
+  get deckMeta(): object {
     return {
       title: 'Making a slide deck with Glimmer',
       author: 'Robbie Pitts',
