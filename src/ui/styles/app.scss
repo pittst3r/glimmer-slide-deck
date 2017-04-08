@@ -14,6 +14,7 @@ body {
   display: none;
 }
 
-code {
+code, code[class*='language-'], pre[class*='language-'] {
   font-family: 'Input', 'Menlo', 'Monaco', 'Courier New', monospace;
+  text-shadow: none;
 }
