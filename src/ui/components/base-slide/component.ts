@@ -4,13 +4,20 @@ export default class BaseSlide extends Component {
   @tracked ordinal: number;
 
   @tracked args: {
-    current: number,
+    current: number | boolean,
     title: string,
-    meta: string
+    deckMeta: {
+      title: string,
+      author: string,
+      twitter: string,
+      github: string
+    }
   };
 
   @tracked('args', 'ordinal') get currentClass(): string {
-    return this.args.current === this.ordinal ? '' : 'hidden';
+    if (this.args.current === this.ordinal) return '';
+
+    return 'hidden';
   }
 
   didInsertElement(): void {

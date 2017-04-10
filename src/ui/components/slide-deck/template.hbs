@@ -32,9 +32,10 @@
       <h1>Welcome to Glimmer!</h1>
     </blockquote>
   </content-slide>
-  
+
   <content-slide @title="About the app's entry point" @current={{current}} @deckMeta={{deckMeta}}>
-    <p>Our app is actually just a component tree that starts with a root component. A root component is just like any other component, but it is rendered like this from <code>src/index.ts</code>:</p>
+    <p>Our app is actually just a component tree that starts with a root component. A root component is just like any other component, but it is rendered like this:</p>
+    <h3><code>src/index.ts</code></h3>
     <code-snippet class="language-typescript">
       const app = new App();
       const containerElement = document.getElementById('app');
@@ -44,8 +45,25 @@
     <p>At this time you cannot pass args into the root component. Initial state must come from inside the root component. We are working on changing that.</p>
   </content-slide>
 
+  <content-slide @title="About the directory structure" @current={{current}} @deckMeta={{deckMeta}}>
+    <p>This is the new <a href="https://github.com/emberjs/rfcs/blob/master/text/0143-module-unification.md">module unification</a> directory structure as it looks with our basic Glimmer app:</p>
+    <code-snippet class="language-x">
+      src
+      ├── index.ts
+      ├── main.ts
+      └── ui
+          ├── components
+          │   ├── slide-deck
+          │   │   ├── component.ts
+          │   │   └── template.hbs
+          ├── index.html
+          └── styles
+              └── app.scss
+    </code-snippet>
+  </content-slide>
+
   <content-slide @title="Give our app some data" @current={{current}} @deckMeta={{deckMeta}}>
-    <p>Open up <code>src/ui/components/slide-deck/component.ts</code> and make the class look like this:</p>
+    <h3><code>src/ui/components/slide-deck/component.ts</code></h3>
     <code-snippet class="language-typescript">
       export default class SlideDeck extends Component {
         get deckMeta(): object {
@@ -58,5 +76,53 @@
         }
       }
     </code-snippet>
+  </content-slide>
+
+  <content-slide @title="Render that data" @current={{current}} @deckMeta={{deckMeta}}>
+    <p>First some notes about Glimmer templates:</p>
+    <ul>
+      <li>They are outer-html, opposed to Ember's inner-html templates</li>
+      <li>They must have a single top-level element</li>
+      <li>You should be able to do <code>&lt;component-name&gt;</code> as the top-level element but can't; it's a bug</li>
+    </ul>
+  </content-slide>
+
+  <content-slide @title="Render that data" @current={{current}} @deckMeta={{deckMeta}}>
+    <h3><code>src/ui/components/slide-deck/template.hbs</code></h3>
+    <code-snippet class="language-handlebars">{{escape-markup "
+      <div class=\"slide-deck\">
+        <title-slide @deckMeta={{deckMeta}} />
+      </div>
+    "}}</code-snippet>
+  </content-slide>
+
+  <content-slide @title="Render that data" @current={{current}} @deckMeta={{deckMeta}}>
+    <p>Let's make the <code>{{escape-markup "<title-slide />"}}</code> component:</p>
+    <code-snippet class="language-x">
+      $ ember g glimmer-component title-slide
+    </code-snippet>
+  </content-slide>
+
+  <content-slide @title="Render that data" @current={{current}} @deckMeta={{deckMeta}}>
+    <h3><code>src/ui/components/slide-deck/template.hbs</code></h3>
+    <code-snippet class="language-handlebars">{{escape-markup "
+      <div class=\"slide-deck\">
+        <title-slide @deckMeta={{deckMeta}} />
+      </div>
+    "}}</code-snippet>
+    <h3><code>src/ui/components/title-slide/template.hbs</code></h3>
+    <code-snippet class="language-handlebars">{{escape-markup "
+      <div class=\"slide title-slide\">
+        <h1>{{@deckMeta.title}}</h1>
+        <h2>{{@deckMeta.author}}</h2>
+        <h2>twitter: {{@deckMeta.twitter}}</h2>
+        <h2>github: {{@deckMeta.github}}</h2>
+      </div>
+    "}}</code-snippet>
+  </content-slide>
+  
+  <content-slide @title="Render that data" @current={{current}} @deckMeta={{deckMeta}}>
+    <p>Refresh your browser and see the fruits of your labor.</p>
+    <p>Next up: our first content slide.</p>
   </content-slide>
 </div>
