@@ -130,7 +130,7 @@
     <code-snippet class="language-handlebars">{{escape-markup "
       <div class=\"slide-deck\">
         <title-slide @deckMeta={{deckMeta}} />
-        <content-slide @deckMeta={{deckMeta}} @title=\"First slide\">
+        <content-slide @title=\"First slide\" @deckMeta={{deckMeta}}>
           <p>Cool slide, bro.</p>
         </content-slide>
       </div>
@@ -147,7 +147,7 @@
   <content-slide @title="Fill in the content-slide template" @current={{current}} @deckMeta={{deckMeta}}>
     <p>What we're trying to implement:</p>
     <code-snippet class="language-handlebars">{{escape-markup "
-      <content-slide @deckMeta={{deckMeta}} @title=\"First slide\">
+      <content-slide @title=\"First slide\" @deckMeta={{deckMeta}}>
         <p>Cool slide, bro.</p>
       </content-slide>
     "}}</code-snippet>
@@ -256,5 +256,253 @@
         }
       }
     </code-snippet>
+  </content-slide>
+
+  <content-slide @title="Now to show only one slide at a time" @current={{current}} @deckMeta={{deckMeta}}>
+    <h3>{{inline-code "src/ui/components/slide-deck/template.hbs"}}</h3>
+    <code-snippet class="language-handlebars">{{escape-markup "
+      <div class=\"slide-deck\">
+        <title-slide @deckMeta={{deckMeta}} />
+        <content-slide @title=\"First slide\" @current={{current}} @deckMeta={{deckMeta}}>
+          <p>Cool slide, bro.</p>
+        </content-slide>
+      </div>
+    "}}</code-snippet>
+  </content-slide>
+
+  <content-slide @title="Implement the `current` property" @current={{current}} @deckMeta={{deckMeta}}>
+    <h3>{{inline-code "src/ui/components/slide-deck/component.ts"}}</h3>
+    <code-snippet class="language-typescript">
+      import Component, { tracked } from '@glimmer/component';
+      import DeckMeta from '../../utils/deck-meta';
+
+      export default class SlideDeck extends Component {
+        @tracked current: number = 0;
+        // ...
+      }
+    </code-snippet>
+  </content-slide>
+
+  <content-slide @title="Before we finish implementing the `current` property..." @current={{current}} @deckMeta={{deckMeta}}>
+    <p>We have two slide components now but they need to share functionality. Let's make a common superclass.</p>
+  </content-slide>
+
+  <content-slide @title="Review our slide classes" @current={{current}} @deckMeta={{deckMeta}}>
+    <p>Here is our {{inline-code "<content-slide />"}} class. We can extract {{inline-code "args"}} while we're in here.</p>
+    <h3>{{inline-code "src/ui/components/content-slide/component.ts"}}</h3>
+    <code-snippet class="language-typescript">
+      import Component, { tracked } from '@glimmer/component';
+      import DeckMeta from '../../utils/deck-meta';
+
+      export default class ContentSlide extends Component {
+        args: {
+          title: string,
+          deckMeta: DeckMeta
+        }
+
+        get headerText() {
+          let { title, author, twitter, github } = this.args.deckMeta;
+          return `${title} / ${author} / twitter: ${twitter} / github: ${github}`;
+        }
+      }
+    </code-snippet>
+  </content-slide>
+
+  <content-slide @title="Review our slide classes" @current={{current}} @deckMeta={{deckMeta}}>
+    <p>Here is our {{inline-code "<title-slide />"}} class. Not much in here at the moment.</p>
+    <h3>{{inline-code "src/ui/components/title-slide/component.ts"}}</h3>
+    <code-snippet class="language-typescript">
+      import Component from '@glimmer/component';
+
+      export default class TitleSlide extends Component {
+      }
+    </code-snippet>
+  </content-slide>
+
+  <content-slide @title="Make our slide superclass" @current={{current}} @deckMeta={{deckMeta}}>
+    <p>Let's move our args property in here and track it since it will change.</p>
+    <h3>{{inline-code "src/ui/components/base-slide/component.ts"}}</h3>
+    <code-snippet class="language-typescript">
+      import Component, { tracked } from "@glimmer/component";
+      import DeckMeta from '../../../utils/deck-meta';
+
+      export default class BaseSlide extends Component {
+        @tracked args: {
+          title: string,
+          deckMeta: DeckMeta
+        };
+      }
+    </code-snippet>
+  </content-slide>
+
+  <content-slide @title="Inherit our superclass in our other slides" @current={{current}} @deckMeta={{deckMeta}}>
+    <h3>{{inline-code "src/ui/components/title-slide/component.ts"}}</h3>
+    <code-snippet class="language-typescript">
+      import BaseSlide from '../base-slide/component';
+
+      export default class TitleSlide extends BaseSlide {
+      }
+    </code-snippet>
+    <h3>{{inline-code "src/ui/components/content-slide/component.ts"}}</h3>
+    <code-snippet class="language-typescript">
+      import BaseSlide from '../base-slide/component';
+
+      export default class ContentSlide extends BaseSlide {
+        get headerText() {
+          let { title, author, twitter, github } = this.args.deckMeta;
+          return `${title} / ${author} / twitter: ${twitter} / github: ${github}`;
+        }
+      }
+    </code-snippet>
+  </content-slide>
+
+  <content-slide @title="Now back to showing one slide at a time" @current={{current}} @deckMeta={{deckMeta}}>
+    <p>Let's add {{inline-code "current"}} to the {{inline-code "args"}} type definition.</p>
+    <h3>{{inline-code "src/ui/components/base-slide/component.ts"}}</h3>
+    <code-snippet class="language-typescript">
+      import Component, { tracked } from "@glimmer/component";
+      import DeckMeta from '../../../utils/deck-meta';
+
+      export default class BaseSlide extends Component {
+        @tracked args: {
+          current: number,
+          title: string,
+          deckMeta: DeckMeta
+        };
+      }
+    </code-snippet>
+  </content-slide>
+
+  <content-slide @title="Using our `current` arg" @current={{current}} @deckMeta={{deckMeta}}>
+    <p>Remember, our {{inline-code "current"}} arg comes from the {{inline-code "<slide-deck />"}} component and gets passed into slide components.</p>
+    <h3>{{inline-code "src/ui/components/slide-deck/component.ts"}}</h3>
+    <code-snippet class="language-typescript">
+      import Component, { tracked } from '@glimmer/component';
+      import DeckMeta from '../../utils/deck-meta';
+
+      export default class SlideDeck extends Component {
+        @tracked current: number = 0;
+        // ...
+      }
+    </code-snippet>
+    <h3>{{inline-code "src/ui/components/slide-deck/template.hbs"}}</h3>
+    <code-snippet class="language-handlebars">{{escape-markup "
+      <div class=\"slide-deck\">
+        <title-slide @deckMeta={{deckMeta}} />
+        <content-slide @title=\"First slide\" @current={{current}} @deckMeta={{deckMeta}}>
+          <p>Cool slide, bro.</p>
+        </content-slide>
+      </div>
+    "}}</code-snippet>
+  </content-slide>
+
+  <content-slide @title="Using our `current` arg" @current={{current}} @deckMeta={{deckMeta}}>
+    <p>Now we need to figure out where each slide is in the deck and compare that to the current slide.</p>
+    <h3>{{inline-code "src/ui/components/base-slide/component.ts"}}</h3>
+    <code-snippet class="language-typescript">
+      import Component, { tracked } from "@glimmer/component";
+
+      export default class BaseSlide extends Component {
+        // ...
+
+        @tracked ordinal: number;
+
+        @tracked('args', 'ordinal') get currentClass(): string {
+          if (this.args.current === this.ordinal) return '';
+
+          return 'hidden';
+        }
+
+        didInsertElement(): void {
+          // set this.ordinal to this slide's position in the deck
+        }
+      }
+    </code-snippet>
+  </content-slide>
+
+  <content-slide @title="Using our `current` arg" @current={{current}} @deckMeta={{deckMeta}}>
+    <p>Let's initialize our title slide with an ordinal of 0, since we know that in advance.</p>
+    <h3>{{inline-code "src/ui/components/title-slide/component.ts"}}</h3>
+    <code-snippet class="language-typescript">
+      import BaseSlide from '../base-slide/component';
+
+      export default class TitleSlide extends BaseSlide {
+        ordinal = 0;
+      }
+    </code-snippet>
+  </content-slide>
+
+  <content-slide @title="Using our `currentClass` property" @current={{current}} @deckMeta={{deckMeta}}>
+    <h3>{{inline-code "src/ui/components/content-slide/template.hbs"}}</h3>
+    <code-snippet class="language-handlebars">{{escape-markup "
+      <div class=\"slide content-slide {{currentClass}}\">
+        <header><p>{{headerText}}</p></header>
+        <article>
+          <h1>{{@title}}</h1>
+          {{yield}}
+        </article>
+      </div>
+    "}}</code-snippet>
+  </content-slide>
+
+  <content-slide @title="Using our `currentClass` property" @current={{current}} @deckMeta={{deckMeta}}>
+    <h3>{{inline-code "src/ui/components/title-slide/template.hbs"}}</h3>
+    <code-snippet class="language-handlebars">{{escape-markup "
+      <div class=\"slide title-slide {{currentClass}}\">
+        <h1>{{@deckMeta.title}}</h1>
+        <h2>{{@deckMeta.author}}</h2>
+        <h2>twitter: {{@deckMeta.twitter}}</h2>
+        <h2>github: {{@deckMeta.github}}</h2>
+      </div>
+    "}}</code-snippet>
+  </content-slide>
+
+  <content-slide @title="Bask in your sweet, sweet success" @current={{current}} @deckMeta={{deckMeta}}>
+    <p>At this point one slide should be showing and it should be the title slide.</p>
+  </content-slide>
+
+  <content-slide @title="Bind keypresses to actions" @current={{current}} @deckMeta={{deckMeta}}>
+    <h3>{{inline-code "src/ui/components/slide-deck/component.ts"}}</h3>
+    <code-snippet class="language-typescript">
+      import Component, { tracked } from '@glimmer/component';
+
+      const BRACKET_LEFT = 91;
+      const BRACKET_RIGHT = 93;
+
+      export default class SlideDeck extends Component {
+        @tracked current: number = 0;
+
+        didInsertElement() {
+          window.addEventListener('keypress', {
+            handleEvent: this.keypressHandler = this.keypressHandler.bind(this)
+          });
+        }
+
+        private keypressHandler(ev: KeyboardEvent): void {
+          let which = ev.which;
+          let actionMap = {
+            [BRACKET_LEFT]: this.back,
+            [BRACKET_RIGHT]: this.forward
+          };
+
+          actionMap[which].apply(this);
+        }
+        
+        private back(): void {
+          this.current--;
+        }
+
+        private forward(): void {
+          this.current++;
+        }
+      }
+    </code-snippet>
+  </content-slide>
+
+  <content-slide @title="More success" @current={{current}} @deckMeta={{deckMeta}}>
+    <p>Now we have an interactive slide deck.</p>
+    <p>See the finished product at <a href="https://www.github.com/robbiepitts/slide-deck">github.com/robbiepitts/slide-deck</a>.</p>
+    <p>To learn more about Glimmer visit <a href="https://glimmerjs.com/">glimmerjs.com</a>. You can also go to the Glimmer channel on the Ember Community Slack with specific questions.</p>
+    <p>Thank you!</p>
   </content-slide>
 </div>
