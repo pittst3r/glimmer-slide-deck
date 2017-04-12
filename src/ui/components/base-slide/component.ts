@@ -1,4 +1,5 @@
 import Component, { tracked } from "@glimmer/component";
+import DeckMeta from '../../../utils/deck-meta';
 
 export default class BaseSlide extends Component {
   @tracked ordinal: number;
@@ -6,12 +7,7 @@ export default class BaseSlide extends Component {
   @tracked args: {
     current: number | boolean,
     title: string,
-    deckMeta: {
-      title: string,
-      author: string,
-      twitter: string,
-      github: string
-    }
+    deckMeta: DeckMeta
   };
 
   @tracked('args', 'ordinal') get currentClass(): string {

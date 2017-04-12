@@ -1,4 +1,5 @@
 import Component, { tracked } from "@glimmer/component";
+import DeckMeta from '../../../utils/deck-meta';
 
 const BRACKET_LEFT = 91;
 const BRACKET_RIGHT = 93;
@@ -12,7 +13,7 @@ export default class SlideDeck extends Component {
     });
   }
 
-  get deckMeta(): object {
+  get deckMeta(): DeckMeta {
     return {
       title: 'Making a slide deck with Glimmer',
       author: 'Robbie Pitts',
