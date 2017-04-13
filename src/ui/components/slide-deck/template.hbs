@@ -4,6 +4,49 @@
     @deckMeta={{deckMeta}}
   />
 
+  <content-slide @title="About me" @current={{current}} @deckMeta={{deckMeta}}>
+    <ul>
+      <li>Retail 1 team</li>
+      <li>Background is full-stack</li>
+      <li>Pure front-end since working at Q2 and love it</li>
+      <li>Been pretty involved helping to build out Glimmer (not the Glimmer VM though)</li>
+    </ul>
+    <p><img src="/forest-park.jpg" width="30%" /></p>
+  </content-slide>
+
+  <content-slide @title="What even is Glimmer?" @current={{current}} @deckMeta={{deckMeta}}>
+    <ul>
+      <li>A new javascript component library</li>
+      <li>Extracted from Ember's rendering layer</li>
+    </ul>
+  </content-slide>
+
+  <content-slide @title="Why I'm super excited about Glimmer" @current={{current}} @deckMeta={{deckMeta}}>
+    <h3>Very fast initial render</h3>
+    <ul>
+      <li>Faster than React and Preact (with static content thrown in the mix)</li>
+    </ul>
+    <h3>Very, very fast re-render</h3>
+    <ul>
+      <li>Faster than React, Preact, and Inferno</li>
+    </ul>
+    <h3>Uses a novel approach to accomplish this performance</h3>
+    <ul>
+      <li>Precompiles templates into bytecode, leading to super small asset sizes</li>
+      <li>Uses the "appending" Glimmer VM to build the DOM out of the opcodes</li>
+      <li>Uses the "updating" Glimmer VM to selectively update the DOM, all without diffing</li>
+    </ul>
+    <h3>A basic Glimmer app is only 30kb gzipped</h3>
+    <h3>Written in TypeScript</h3>
+  </content-slide>
+  
+  <content-slide @title="To give you an idea of just how fast it is" @current={{current}} @deckMeta={{deckMeta}}>
+    <p>
+      <img src="http://yehudakatz.com/content/images/2017/04/realistic-update.png" width="70%" />
+    </p>
+    <p>Source: <a href="http://yehudakatz.com/2017/04/05/the-glimmer-vm-boots-fast-and-stays-fast/">The Glimmer VM: Boots Fast and Stays Fast</a></p>
+  </content-slide>
+
   <content-slide @title="Get set up" @current={{current}} @deckMeta={{deckMeta}}>
     <p>We need the ember-cli canary channel for the next step. This is how we get it:</p>
     <code-snippet class="language-x">
@@ -117,11 +160,6 @@
         <h2>github: {{@deckMeta.github}}</h2>
       </div>
     "}}</code-snippet>
-  </content-slide>
-
-  <content-slide @title="Render that data" @current={{current}} @deckMeta={{deckMeta}}>
-    <p>Refresh your browser and see the fruits of your labor.</p>
-    <p>Next up: our first content slide.</p>
   </content-slide>
 
   <content-slide @title="Add a slide" @current={{current}} @deckMeta={{deckMeta}}>
@@ -262,7 +300,7 @@
     <h3>{{inline-code "src/ui/components/slide-deck/template.hbs"}}</h3>
     <code-snippet class="language-handlebars">{{escape-markup "
       <div class=\"slide-deck\">
-        <title-slide @deckMeta={{deckMeta}} />
+        <title-slide @current={{current}} @deckMeta={{deckMeta}} />
         <content-slide @title=\"First slide\" @current={{current}} @deckMeta={{deckMeta}}>
           <p>Cool slide, bro.</p>
         </content-slide>
@@ -388,7 +426,7 @@
     <h3>{{inline-code "src/ui/components/slide-deck/template.hbs"}}</h3>
     <code-snippet class="language-handlebars">{{escape-markup "
       <div class=\"slide-deck\">
-        <title-slide @deckMeta={{deckMeta}} />
+        <title-slide @current={{current}} @deckMeta={{deckMeta}} />
         <content-slide @title=\"First slide\" @current={{current}} @deckMeta={{deckMeta}}>
           <p>Cool slide, bro.</p>
         </content-slide>
@@ -459,6 +497,7 @@
 
   <content-slide @title="Bask in your sweet, sweet success" @current={{current}} @deckMeta={{deckMeta}}>
     <p>At this point one slide should be showing and it should be the title slide.</p>
+    <p><img src="https://i.ytimg.com/vi/er0jZv_0r-g/maxresdefault.jpg" width="70%" /></p>
   </content-slide>
 
   <content-slide @title="Bind keypresses to actions" @current={{current}} @deckMeta={{deckMeta}}>
@@ -487,7 +526,7 @@
 
           actionMap[which].apply(this);
         }
-        
+
         private back(): void {
           this.current--;
         }
@@ -499,7 +538,7 @@
     </code-snippet>
   </content-slide>
 
-  <content-slide @title="More success" @current={{current}} @deckMeta={{deckMeta}}>
+  <content-slide @title="Fin" @current={{current}} @deckMeta={{deckMeta}}>
     <p>Now we have an interactive slide deck.</p>
     <p>See the finished product at <a href="https://www.github.com/robbiepitts/slide-deck">github.com/robbiepitts/slide-deck</a>.</p>
     <p>To learn more about Glimmer visit <a href="https://glimmerjs.com/">glimmerjs.com</a>. You can also go to the Glimmer channel on the Ember Community Slack with specific questions.</p>
